@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dadol\\OneDrive\\Scuola\\Sistemi\\lab sistemi\\Programmazione\\Bellman-Ford\\Bellman-Ford\\Bellman-Ford.csproj": {}
+    "C:\\Users\\Gianmarco\\Documents\\GitHub\\Bellman-Ford\\Bellman-Ford.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dadol\\OneDrive\\Scuola\\Sistemi\\lab sistemi\\Programmazione\\Bellman-Ford\\Bellman-Ford\\Bellman-Ford.csproj": {
+    "C:\\Users\\Gianmarco\\Documents\\GitHub\\Bellman-Ford\\Bellman-Ford.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dadol\\OneDrive\\Scuola\\Sistemi\\lab sistemi\\Programmazione\\Bellman-Ford\\Bellman-Ford\\Bellman-Ford.csproj",
+        "projectUniqueName": "C:\\Users\\Gianmarco\\Documents\\GitHub\\Bellman-Ford\\Bellman-Ford.csproj",
         "projectName": "Bellman-Ford",
-        "projectPath": "C:\\Users\\dadol\\OneDrive\\Scuola\\Sistemi\\lab sistemi\\Programmazione\\Bellman-Ford\\Bellman-Ford\\Bellman-Ford.csproj",
-        "packagesPath": "C:\\Users\\dadol\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dadol\\OneDrive\\Scuola\\Sistemi\\lab sistemi\\Programmazione\\Bellman-Ford\\Bellman-Ford\\obj\\",
+        "projectPath": "C:\\Users\\Gianmarco\\Documents\\GitHub\\Bellman-Ford\\Bellman-Ford.csproj",
+        "packagesPath": "C:\\Users\\Gianmarco\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Gianmarco\\Documents\\GitHub\\Bellman-Ford\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\dadol\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Gianmarco\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -30,7 +26,6 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -42,7 +37,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "imports": [
             "net461",
             "net462",
@@ -58,7 +52,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

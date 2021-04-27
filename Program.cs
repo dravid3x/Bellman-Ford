@@ -7,19 +7,20 @@ namespace Bellman_Ford
     {
         //matrice delle adiacenze
         public static List<List<int>> matrice = new List<List<int>>();
-        //matrice di router (potrebbe non essere necessario)
-        static List<List<Nodo>> routers = new List<List<Nodo>>();
-        //lista che contiene delle liste di liste, che sarebbero tutte le varie tabelle delle provenienze
-        static List<List<List<adiacenza>>> tabelle = new List<List<List<adiacenza>>>();
+        //lista di nodi che mi servirà per sostituire la tabellina dei costi
+        static List<Nodo> routers = new List<Nodo>();
         //vettore di interi che mi servirà per risalire il percorso da percorrere per arrivare da un router all'altro
         static List<int> percorso_router = new List<int>();
         static void Main(string[] args)
         {
             int nNodi, nIniziale, nFinale;
+            //inserimento numero di nodi
             Console.Write("Inserire il numero di nodi: ");
             nNodi = Convert.ToInt32(Console.ReadLine());
+            for (int i = 0; i < nNodi; i++) routers.Add(new Nodo()); //Inizializzazione della lista di nodi 
             Console.WriteLine("Desidera inserire la matrice a mano o da codice? (0 Mano - 1 Codice)");
             int scelta = Convert.ToInt32(Console.ReadLine());
+            //inizializzo la matrice a con tutti -1 e la diagonale di 0
             InizializzazioneMatrice(nNodi);
             if (scelta == 0)
             {
@@ -44,15 +45,18 @@ namespace Bellman_Ford
                 Console.Clear();
                 Main(args);
             }
-            inizializzaTabelle(nNodi);
-            /*for(int c= 0;c<nNodi;c++)
-            {
-                for (int i = 0; i < nNodi; i++)
-                {
-                    routers[c].Add(new Nodo());
-                }//Inizializzazione della lista di nodi
-            }*/
-
+            Console.Write("\nInserire il nodo iniziale: ");
+            nIniziale = Convert.ToInt32(Console.ReadLine());
+            //imposto il costo del nodo iniziale a 0 in quanto se lo lasciassi ad infinito l'algoritmo non funzionerebbe
+            routers[nIniziale].Costo = 0;
+            Console.Write("Inserire il nodo finale: ");
+            nFinale = Convert.ToInt32(Console.ReadLine());
+            //vado avanti fino a quando la funzione algoritmo non restituirà un valroe true e quindi le modifiche nella lista di tipo nodo saranno finite
+            while (!algoritmo(nNodi,nIniziale)) ;
+            Console.WriteLine("Per arrivare al router " + Convert.ToString(nFinale) + " dal router " + Convert.ToString(nIniziale) + " bisogna seguire il percorso\n");
+            Salva_Percorso(nFinale);
+            Stampa_Percorso(nFinale);
+            Console.WriteLine("\ncosto : " + Convert.ToString(routers[nFinale].Costo) + "\n");
         }
         //metodo che inizializza la matrice delle adiacenze con la diagonale degli 0 e le restanti celle a valore -1
         private static void InizializzazioneMatrice(int nNodi)
@@ -97,59 +101,57 @@ namespace Bellman_Ford
             }
         }
         //metodo che genera la lista di tabelle che serviranno poi per l'esecuzione dell'algoritmo
-        private static void inizializzaTabelle(int nNodi)
-        {
-            List<tabella> test = new List<tabella>();
-            test.Add(new tabella());
-
-            for (int i = 0; i < nNodi; i++)
+       private static bool algoritmo(int nNodi, int nIniziale)
+       {
+            bool controllo = true;
+            int nuovo_costo;
+            
+            //ripeto le operazioni di controllo del percorso per tutti i router della rete
+            for (int c=0;c<nNodi;c++)
             {
-                for(int x = 0; x < 3; x++)
+                //entro solo se so come raggiungere il router, quindi il costo è diverso da max int
+                if(routers[c].Costo!=int.MaxValue)
                 {
-                    test[0].colonna.Add(new tabella());
-                    for (int c = 0; c < 5; c++)
+                    //controllo tutta la riga della matrice delle adiacenze di ogni router e nel caso aggiorno i costi (solo se sono migliorativi)
+                    for (int d = 0; d < nNodi; d++)
                     {
-                        test[0].colonna[x].colonna.Add(new tabella());
+                        //entro solo se trovo un router a cui sono collegato direttamente
+                        if (matrice[c][d] > 0)
+                        {
+                            //mi salvo il nuovo costo ipotetico in una variabile per comodità
+                            nuovo_costo = matrice[c][d] + routers[c].Costo; //il nuovo costo ipotetico lo ottengo
+                                                                            //sommando il costo per arrivare al nodo c + il costo preso dalla matrice delle adiacenze per arrivare al router in posizione d
+                            //se il costo è migliorativo aggiorno il costo, la provenienza e setto controllo a falso in quanto ho fatto una modifica
+                            if(routers[d].Costo > nuovo_costo)
+                            {
+                                routers[d].Precedente = c;
+                                routers[d].Costo = nuovo_costo;
+                                controllo = false;
+                            }
+                        }
                     }
                 }
             }
-            
-
-            Console.WriteLine(test[0]);
-
-
-
-
-
-
-            //creo tante tabelle quanti sono i router 
-            for (int c = 0; c < nNodi; c++)
+            return controllo;
+       }
+        //metodo per risalire al percorso a ritroso
+        private static void Salva_Percorso(int nFinale)
+        {
+            int precedente = nFinale;
+            while (precedente != -1)
             {
-                //inizializzo la prima riga della tabella con una cella vuota e poi i router adiacenti e il costo per arrivarci 
-                tabelle[c][0].Add(new adiacenza(0, 0));
-                for (int d = 0; d < nNodi; d++)
-                {
-                    //entro se c'è un router collegato direttamente
-                    if (matrice[c][d] > 0)
-                    {
-                        //aggiugno una cella a cui passo il costo, contenuto nella matrice e il numero del router contenuto in d
-                        tabelle[c][0].Add(new adiacenza(matrice[c][d], d));
-                    }
-                }
-                int n = 0;
-                //ora inizializzo le righe partendo da 1 e inserisco tutti i router, eccetto quello di partenza, tutti con costo 0 visto che non mi serve
-                for (int i = 1; i < nNodi; i++)
-                {
-                    //se il router in considerazione non è quello di partenza lo aggiugno alla posizione 0 della riga
-                    if (n == c)
-                        n++;
-                    tabelle[c][i].Add(new adiacenza(0, n));
-                    //in caso contrario lo salto e vado al router successivo
-
-                }
+                percorso_router.Add(precedente);
+                precedente = routers[precedente].Precedente;
             }
         }
-
-
+        //metodo per stampare il percorso non a ritroso
+        private static void Stampa_Percorso(int nFinale)
+        {
+            int dim = percorso_router.Count - 1;
+            for (int i = dim; i > 0; i--)
+            {
+                Console.WriteLine(percorso_router[i]);
+            }
+        }
     }
 }
