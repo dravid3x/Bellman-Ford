@@ -104,29 +104,37 @@ namespace Bellman_Ford
             bool controllo = true;
             int nuovo_costo;
             List<Nodo> appoggio = new List<Nodo>();
+            //inizializzazione lista di appoggio
+            for (int c = 0; c < nNodi; c++) appoggio.Add(new Nodo());
             //ripeto le operazioni di controllo del percorso per tutti i router della rete
             for (int c=0;c<nNodi;c++)
             {
+                //riempio la lista di appoggio con i valori della matrice di routers
+                for (int k = 0; k < nNodi; k++)
+                {
+                    appoggio[k].Costo = routers[c][k].Costo;
+                    appoggio[k].Precedente = routers[c][k].Precedente;
+                }
                 //il secondo ciclo mi serve per ripetere le operazioni di controllo contemporaneamente su ogni router
                 for(int j = 0;j<nNodi;j++)
                 {
                     //entro solo se so come raggiungere il router, quindi il costo è diverso da max int
-                    if (routers[j][c].Costo != int.MaxValue)
+                    if (appoggio[j].Costo != int.MaxValue)
                     {
                         //controllo tutta la riga della matrice delle adiacenze di ogni router e nel caso aggiorno i costi (solo se sono migliorativi)
                         for (int d = 0; d < nNodi; d++)
                         {
                             //entro solo se trovo un router a cui sono collegato direttamente
-                            if (matrice[c][d] > 0)
+                            if (matrice[j][d] > 0)
                             {
                                 //mi salvo il nuovo costo ipotetico in una variabile per comodità
-                                nuovo_costo = matrice[c][d] + routers[j][c].Costo; //il nuovo costo ipotetico lo ottengo
+                                nuovo_costo = matrice[j][d] + appoggio[j].Costo; //il nuovo costo ipotetico lo ottengo
                                                                                 //sommando il costo per arrivare al nodo c + il costo preso dalla matrice delle adiacenze per arrivare al router in posizione d
                                                                                 //se il costo è migliorativo aggiorno il costo, la provenienza e setto controllo a falso in quanto ho fatto una modifica
-                                if (routers[j][d].Costo > nuovo_costo)
+                                if (routers[c][d].Costo > nuovo_costo)
                                 {
-                                    routers[j][d].Precedente = c;
-                                    routers[j][d].Costo = nuovo_costo;
+                                    routers[c][d].Precedente = j;
+                                    routers[c][d].Costo = nuovo_costo;
                                     controllo = false;
                                 }
                             }
